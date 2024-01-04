@@ -65,7 +65,8 @@ public partial class InMemoryShapedQueryCompilingExpressionVisitor : ShapedQuery
             typeof(QueryingEnumerable<>).MakeGenericType(shaperExpression.ReturnType).GetConstructors()[0],
             QueryCompilationContext.QueryContextParameter,
             innerEnumerable,
-            Constant(shaperExpression.Compile()),
+            //Constant(shaperExpression.Compile()),
+            shaperExpression,
             Constant(_contextType),
             Constant(
                 QueryCompilationContext.QueryTrackingBehavior == QueryTrackingBehavior.NoTrackingWithIdentityResolution),
