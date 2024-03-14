@@ -1,7 +1,9 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Resources;
 using Microsoft.Azure.Cosmos;
+using Microsoft.EntityFrameworkCore.Cosmos.Diagnostics.Internal;
 using Microsoft.EntityFrameworkCore.Cosmos.Internal;
 using Microsoft.EntityFrameworkCore.TestModels.Northwind;
 using Xunit.Sdk;
@@ -226,16 +228,18 @@ OFFSET 0 LIMIT 1
     }
 
     public override async Task Array_cast_to_IEnumerable_Contains_with_constant(bool async)
-    {
-        await base.Array_cast_to_IEnumerable_Contains_with_constant(async);
+        => await Fixture.NoSyncTest(
+            async, async a =>
+            {
+                await base.Array_cast_to_IEnumerable_Contains_with_constant(a);
 
-        AssertSql(
-            """
+                AssertSql(
+                    """
 SELECT c
 FROM root c
 WHERE ((c["Discriminator"] = "Customer") AND c["CustomerID"] IN ("ALFKI", "WRONG"))
 """);
-    }
+            });
 
     public override async Task FirstOrDefault_Predicate(bool async)
     {
